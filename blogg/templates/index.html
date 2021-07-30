@@ -1,0 +1,55 @@
+{%extends 'base.html'%}
+{%load crispy_forms_tags%}
+{%load static%}
+{%load cloudinary%}
+{%load bootstrap4%}
+{%block content %}
+{{block.super}}
+<div class="landing-page d-flex justify-content-center align-items-center text-center"
+  style="background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0, 0, 0, 0.7)),url(https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80);height:100vh;background-size:cover;background-position:center;background-repeat:no-repeat;">
+  <div class="content-info ">
+    <h1 class="text-white">Welcome To Blog App</h1>
+
+  </div>
+</div>
+<div class="container pt-5">
+    <div class="row pt-5">
+        <div class="col-md-2"></div>   
+        <div class="col-md-10"> 
+        {% for blog in blogs %}
+            <div class="card mb-4 border">
+                <div class="card-title">
+                    {% if blog.user.profile_photo%}
+                    <img class="rounded-circle account-img" src="{{ blog.user.profile_photo.url}}"
+                        style="width:35px; height:35px;">
+                    {%else%}
+                    <img src="/static/images/outline_account_circle_black_24dp.png" alt=""style="width:35px; height:35px;">
+                    {%endif%}
+                
+                {{blog.user.user.username|title}}
+            </div>
+            <div class="card-body mb-4">
+                <a href="{% url 'blog' blog.id %}"><img src="{{blog.gallery_image.url}}" style="width:100%;" class="card-img" alt="Image"></a>
+                    <br><br>
+                    <p class="text-center"><strong>{{blog.title}}</strong> </p> <br><br>
+                    <p><strong>Posted:</strong> {{blog.pub_date}}</p> 
+                    <div class="card-body">
+                        <a  href="{% url 'comment' blog_id=blog.id%}" style="color:black"><i class="far fa-comment pl-3 fa-2x"></i></a>
+                        
+                    </div>
+                    <em><p><strong>Comments:</strong></p></em>
+                {% for comment in comments %}
+                    {% if comment.blog_id == image.id%}
+                        <p><strong>{{comment.user}}:</strong> {{comment.comment}}</p>
+                        <p>{{comment.posted | timesince}}</p><hr>
+                    {% endif %}
+                {% endfor %}
+                
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+       
+    </div>
+</div><br><br><br><br><br><br>
+{% endblock %}
